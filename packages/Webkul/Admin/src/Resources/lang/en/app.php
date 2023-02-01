@@ -550,7 +550,8 @@ return [
                 'configurable'                  => 'Configurable',
 
             ],
-            'family'                       => 'Attribute Family',
+            'qty-error'                     => 'Quantity should be less then product base quantity',
+            'family'                        => 'Attribute Family',
             'sku'                           => 'SKU',
             'configurable-attributes'       => 'Configurable Attributes',
             'attribute-header'              => 'Attribute(s)',

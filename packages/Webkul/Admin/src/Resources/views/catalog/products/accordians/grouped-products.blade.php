@@ -228,20 +228,13 @@
                     this.$emit('onRemoveGroupedProduct', this.groupedProduct)
                 },
 
-
                 getvalue: function(event,groupedProduct) {
                     var this_this = this;
-                        console.log(groupedProduct,"219");
-                        console.log(groupedProduct.associated_product.inventory_indices[0].qty,"221");
                        var self=this;
                         var q = groupedProduct.associated_product.inventory_indices[0].qty;
-                        console.log(event.target.value > q,"223");
                         if (event.target.value > q) {
-                            console.log(this_this.isErrordisplay,"234")
-                            this_this.isErrordisplay = true;
-                            
-                        } 
-                        else{
+                            this_this.isErrordisplay = true; 
+                        } else{
                             
                             this_this.isErrordisplay = false;
                         }
