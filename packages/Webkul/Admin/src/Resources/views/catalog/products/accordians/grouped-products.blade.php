@@ -12,6 +12,9 @@
         .table td.actions .icon.pencil-lg-icon {
             margin-right: 10px;
         }
+        .qty-error{
+            color: red;
+        }
     </style>
 @endpush
 
@@ -92,11 +95,14 @@
             </td>
 
             <td>@{{ groupedProduct.associated_product.sku }}</td>
-
+            
+            
             <td>
                 <div class="control-group" :class="[errors.has(inputName + '[qty]') ? 'has-error' : '']">
-                    <input type="number" v-validate="'required|min_value:0'" :name="[inputName + '[qty]']" v-model="groupedProduct.qty" class="control" data-vv-as="&quot;{{ __('admin::app.catalog.products.qty') }}&quot;"/>
+                    <input type="number" v-validate="'required|min_value:0'" :name="[inputName + '[qty]']" v-model="groupedProduct.qty" class="control" data-vv-as="&quot;{{ __('admin::app.catalog.products.qty') }}&quot;" @keyup="getvalue(event,groupedProduct)"/>
+                    <span v-if="isErrordisplay" style="qty-error" >{{ __('admin::app.catalog.products.qty-error')}}</span>
                     <span class="control-error" v-if="errors.has(inputName + '[qty]')">@{{ errors.first(inputName + '[qty]') }}</span>
+                  
                 </div>
             </td>
 
@@ -140,7 +146,7 @@
             methods: {
                 addGroupedProduct: function(item, key) {
                     let alreadyAdded = false;
-
+                   
                     this.grouped_products.forEach(function(groupProduct) {
                         if (item.id == groupProduct.associated_product.id) {
                             alreadyAdded = true;
@@ -148,6 +154,7 @@
                     });
 
                     if (! alreadyAdded) {
+                      
                         this.grouped_products.push({
                                 associated_product: item,
                                 qty: 0,
@@ -158,7 +165,7 @@
                     this.search_term = '';
 
                     this.searched_result = [];
-                },
+                },              
 
                 removeGroupedProduct: function(groupedProduct) {
                     let index = this.grouped_products.indexOf(groupedProduct)
@@ -195,7 +202,15 @@
         Vue.component('grouped-product-item', {
             template: '#grouped-product-item-template',
 
-            props: ['index', 'groupedProduct'],
+            props: ['index', 'groupedProduct', 'associated_product'],
+
+           data: function(){
+            return{
+                isErrordisplay:false,
+            
+            }
+            
+           },
 
             inject: ['$validator'],
 
@@ -211,7 +226,27 @@
             methods: {
                 removeGroupedProduct: function () {
                     this.$emit('onRemoveGroupedProduct', this.groupedProduct)
-                }
+                },
+
+
+                getvalue: function(event,groupedProduct) {
+                    var this_this = this;
+                        console.log(groupedProduct,"219");
+                        console.log(groupedProduct.associated_product.inventory_indices[0].qty,"221");
+                       var self=this;
+                        var q = groupedProduct.associated_product.inventory_indices[0].qty;
+                        console.log(event.target.value > q,"223");
+                        if (event.target.value > q) {
+                            console.log(this_this.isErrordisplay,"234")
+                            this_this.isErrordisplay = true;
+                            
+                        } 
+                        else{
+                            
+                            this_this.isErrordisplay = false;
+                        }
+                },
+
             }
         });
     </script>
