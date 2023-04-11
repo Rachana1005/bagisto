@@ -530,6 +530,7 @@ class Configurable extends AbstractType
                 $variants[] = $variant;
             }
         }
+       
         return $variants;
     }
 
@@ -545,7 +546,6 @@ class Configurable extends AbstractType
         foreach ($this->getAllowedProducts() as $variant) {
             $prices[$variant->id] =$this->getProductPrices();
         }
-
         return min($prices);
     }
      
@@ -555,8 +555,8 @@ class Configurable extends AbstractType
     public function getProductPrices()
     {
         $minPrice = $this->getMinimalPrice();
-        $regularmin = $this -> getRegularMinimalPrice();
-    
+        $regularmin = $this->getRegularMinimalPrice();
+  
         return [
             'regular_price' => [
                 'price'           => core()->convertPrice($this->evaluatePrice($regularmin)),
@@ -587,18 +587,10 @@ class Configurable extends AbstractType
 
         if ($prices['regular_price']['price'] != $prices['final_price']['price']) { 
 
-           if(request()->routeIs("velocity.category.details")){
-
-                $priceHtml .=  '<span class="special-price">' . $prices['final_price']['formatted_price'] . '</span>'
-                            . '  '
-                            .'<span class="price-label">' . trans('shop::app.products.price-label') . '</span>';
-           } else {
-            
                 $priceHtml .= '<span class="regular-price">' . $prices['regular_price']['formatted_price'] . '</span>'
                             . '<span class="special-price">' . $prices['final_price']['formatted_price'] . '</span>'
                             . '  '
                             .'<span class="price-label">' . trans('shop::app.products.price-label') . '</span>';  
-           }       
         } else {
             $priceHtml .= '<span class="price-label">' . trans('shop::app.products.price-label') . '</span>'
                         . '  '

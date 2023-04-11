@@ -189,7 +189,9 @@
                                 this.clearSelect(attribute.nextAttribute)
                             }
 
-                            this.reloadPrice();
+                            if (! attribute['childAttributes'].length) {
+                                this.reloadPrice();
+                            }
                             this.changeProductImages();
                             this.changeStock(this.simpleProduct);
                         },
